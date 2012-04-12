@@ -1,78 +1,285 @@
-<!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Livepreview by bootstraponline</title>
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/main.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<head>
+<title>JavaScript Markdown Editor</title>
 
-  </head>
-  <body>
+<link rel="stylesheet" type="text/css" href="css/gollum/template.css" />
+<link rel="stylesheet" type="text/css" href="css/highlightjs/github.css" />
+  <style type="text/css" media="screen">
+  body {
+      overflow: hidden;
+  }
 
-      <header>
-        <h1>Livepreview</h1>
-        <p>Live preview for Gollum</p>
-      </header>
+  #editor { 
+      margin: 0;
+      padding: 0;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+  }
 
-      <div id="banner">
-        <span id="logo"></span>
+#contentframe {
+margin: 0 auto;
+overflow: visible;
+width: 80%;
+}
 
-        <a href="https://github.com/bootstraponline/livepreview" class="button fork"><strong>Fork On GitHub</strong></a>
-        <div class="downloads">
-          <span>Downloads:</span>
-          <ul>
-            <li><a href="https://github.com/bootstraponline/livepreview/zipball/master" class="button">ZIP</a></li>
-            <li><a href="https://github.com/bootstraponline/livepreview/tarball/master" class="button">TAR</a></li>
-          </ul>
-        </div>
+  #previewframe {
+      margin: 0;
+      padding: 0;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 10px;
+      right: 0;
+  }
 
-      </div><!-- end banner -->
+  /* -- Start from notepag.es -- */
+  #toolpanel {
+    position: fixed;
+    background: #666;
+    top: 0;
+    height: 30px;
+    right: 20px;
+    width: 80px;
+    vertical-align: middle;
+    padding: 5px 0;
+    margin: 0;
+    text-align: center;
+  }
 
-    <div class="wrapper">
-      <nav>
-        <ul></ul>
-      </nav>
-      <section>
-        <h3>Welcome to GitHub Pages.</h3>
+  #save {
+    opacity: 0.4;
+    /* Make it appear as a link even though save
+       doesn't have a href attribute. */
+    cursor: pointer;
+  }
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+  #toolpanel.edit a.edit {
+    display: inline-block;
+  }
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+  #toolpanel a {
+    color: white;
+    text-decoration: none;
+    margin: 0 5px;
+    display: none;
+    padding: 4px;
+    font-family: sans-serif;
+  }
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+  #toolpanel a img {
+    vertical-align: middle;
+    margin-left: 5px;
+    margin: 0;
+    padding: 0;
+  }
 
-<h3>Designer Templates</h3>
+  a img {
+    border: none;
+  }
+  /* -- End from notepag.es -- */
+  </style>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact support@github.com and we’ll help you sort it out.</p>
-      </section>
-      <footer>
-        <p>Project maintained by <a href="https://github.com/bootstraponline">bootstraponline</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
-      </footer>
-    </div>
-    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+    <script src="js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/ace/theme-twilight.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/ace/mode-markdown.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/pagedown/Markdown.Converter.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/pagedown/Markdown.Sanitizer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/jquery/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/highlightjs/highlight.pack.js" type="text/javascript" charset="utf-8"></script>
+    </head>
     
-  </body>
+    <body>
+<div id="editor"># Header 1
+## Header 2
+### Header 3
+
+[link](http://www.example.com)
+
+![Image example](https://a248.e.akamai.net/assets.github.com/images/modules/about_page/octocat.png?1329920549)
+
+**bold**
+
+*italic*
+
+`code`
+
+```ruby
+puts 'code highlighting'
+```
+
+- unordered list
+- unordered list
+- unordered list
+
+----
+
+0. ordered list
+0. ordered list
+0. ordered list
+
+> Block Quote</div>
+
+  <div id="previewframe"><div id="contentframe"></div></div>
+   <!-- tool panel and save from notepage.es -->  
+  <div id="toolpanel" class="edit" style="width: 500px; right: 0px; ">
+    <a id="save" class="edit"><img src="images/save_24.png" alt="save" title="save"></a>
+  </div>
+<script type="text/javascript">
+(function () {
+var converter = Markdown.getSanitizingConverter();
+var editor = ace.edit("editor");
+var editorSession = editor.getSession();
+var preview = document.getElementById("previewframe");
+var content = document.getElementById("contentframe");
+
+editor.setTheme("ace/theme/twilight");
+var MarkdownMode = require("ace/mode/markdown").Mode;
+
+editorSession.setMode(new MarkdownMode());
+// Gutter shows line numbers
+editor.renderer.setShowGutter(true);
+editor.renderer.setHScrollBarAlwaysVisible(false);
+editorSession.setUseSoftTabs(true);
+editorSession.setTabSize(2);
+editorSession.setUseWrapMode(true);
+editor.setShowPrintMargin(false);
+editor.setBehavioursEnabled(true);
+
+window.onload = function() {
+    // onChange calls applyTimeout which rate limits the calling of makePreviewHtml based on render time.
+    editor.on('change', applyTimeout);
+    makePreviewHtml(); // preview default text on load
+
+    function resize() {
+      var ace = editor.container;//document.getElementById("editor");
+      var widthHalf = $(window).width() / 2;
+      var height = $(window).height();
+      ace.style.width = widthHalf + "px";
+      // Minus 50 so the end of document text doesn't flow off the page.
+      ace.style.height = height - 50 + "px";
+      ace.style.left = widthHalf + "px"; //  + 10px from previewFrame
+      ace.style.top = "40px"; // use 40px for tool menu
+      ace.style.fontSize = 16 + "px";
+      editor.resize();
+
+      var previewFrame = document.getElementById("previewframe");
+      previewFrame.style.width = widthHalf - 2 - 10 + "px"; // -2 for scroll bar & -10 for left offset
+      previewFrame.style.height = height + "px";
+      previewFrame.style.left = "10px"; // offset
+      previewFrame.style.top = "0px";
+
+      // Resize tool panel
+      document.getElementById("toolpanel").style.width = widthHalf + "px";
+    }
+
+    $(window).resize(function() {
+      resize();
+    });
+
+    // resize for the intial page load
+    resize();
+};
+
+var elapsedTime;
+var oldInputText = "";
+
+// ---- from Markdown.Editor
+var previewSetter;
+var timeout;
+
+var nonSuckyBrowserPreviewSet = function (text) {
+    content.innerHTML = text;
+}
+
+// IE doesn't let you use innerHTML if the element is contained somewhere in a table
+// (which is the case for inline editing) -- in that case, detach the element, set the
+// value, and reattach. Yes, that *is* ridiculous.
+var ieSafePreviewSet = function (text) {
+    var parent = content.parentNode;
+    var sibling = content.nextSibling;
+    parent.removeChild(content);
+    content.innerHTML = text;
+    if (!sibling)
+        parent.appendChild(content);
+    else
+        parent.insertBefore(content, sibling);
+}
+
+var previewSet = function (text) {
+    if (previewSetter)
+        return previewSetter(text);
+
+    try {
+        nonSuckyBrowserPreviewSet(text);
+        previewSetter = nonSuckyBrowserPreviewSet;
+    } catch (e) {
+        previewSetter = ieSafePreviewSet;
+        previewSetter(text);
+    }
+};
+
+var makePreviewHtml = function () {
+  var text = editorSession.getValue();
+
+  if (text && text == oldInputText) {
+      return; // Input text hasn't changed.
+  }
+  else {
+      oldInputText = text;
+  }
+
+  var prevTime = new Date().getTime();
+
+  text = converter.makeHtml(text);
+
+  // Calculate the processing time of the HTML creation.
+  // It's used as the delay time in the event listener.
+  var currTime = new Date().getTime();
+  elapsedTime = currTime - prevTime;
+
+  // Update the text using feature detection to support IE.
+  // preview.innerHTML = text; // this doesn't work on IE.
+  previewSet(text);
+
+  // highlight code blocks.
+  var codeElements = preview.getElementsByTagName("code");
+  var codeElementsLength = codeElements.length;
+
+  if (codeElementsLength > 0) {
+    for (var idx = 0; idx < codeElementsLength; idx++) {
+      var element = codeElements[idx];
+      var codeHTML = element.innerHTML;
+      var txt = element.innerHTML.split(/\b/);
+      // the syntax for code highlighting means all code, even one line, contains newlines.
+      if (txt.length > 0 && codeHTML.match(/\n/)) {
+        element.className = txt[0] + " highlight";
+        element.innerHTML = codeHTML.substring(txt[0].length);
+        hljs.highlightBlock(element, "  ");
+      } else {
+        element.className = "nohighlight";
+      }
+    }
+  }
+};
+
+// setTimeout is already used.  Used as an event listener.
+var applyTimeout = function () {
+
+    if (timeout) {
+        clearTimeout(timeout);
+        timeout = undefined;
+    }
+
+    // 3 second max delay
+    if (elapsedTime > 3000) {
+        elapsedTime = 3000;
+    }
+    timeout = setTimeout(makePreviewHtml, elapsedTime);
+};
+})();
+</script>
+    </body>
 </html>
