@@ -49,14 +49,11 @@ width: 80%;
     text-align: center;
   }
 
-  #save {
+  #toolpanel.edit a.edit {
     opacity: 0.4;
     /* Make it appear as a link even though save
        doesn't have a href attribute. */
     cursor: pointer;
-  }
-
-  #toolpanel.edit a.edit {
     display: inline-block;
   }
 
@@ -126,6 +123,7 @@ puts 'code highlighting'
    <!-- tool panel and save from notepage.es -->  
   <div id="toolpanel" class="edit" style="width: 500px; right: 0px; ">
     <a id="save" class="edit"><img src="images/save_24.png" alt="save" title="save"></a>
+    <a id="toggle" class="edit" href="javascript:void(0)" onclick="jsm.toggleLeftRight();"><img src="images/lr_24.png" alt="Toggle left to right" title="Toggle left to right"></a>
   </div>
 <script type="text/javascript">
 (function () {
@@ -134,6 +132,15 @@ var editor = ace.edit("editor");
 var editorSession = editor.getSession();
 var preview = document.getElementById("previewframe");
 var content = document.getElementById("contentframe");
+var toolPanel = document.getElementById("toolpanel")
+
+var leftRight = true;
+var jsm = {}; // JavaScript Markdown
+window.jsm = jsm;
+window.jsm.toggleLeftRight = function() {
+  leftRight = leftRight === false ? true : false;
+  jsm.resize();
+}
 
 editor.setTheme("ace/theme/twilight");
 var MarkdownMode = require("ace/mode/markdown").Mode;
@@ -160,7 +167,7 @@ window.onload = function() {
       ace.style.width = widthHalf + "px";
       // Minus 50 so the end of document text doesn't flow off the page.
       ace.style.height = height - 50 + "px";
-      ace.style.left = widthHalf + "px"; //  + 10px from previewFrame
+      ace.style.left = leftRight === false ? widthHalf + "px" : "0px";
       ace.style.top = "40px"; // use 40px for tool menu
       ace.style.fontSize = 16 + "px";
       editor.resize();
@@ -168,12 +175,15 @@ window.onload = function() {
       var previewFrame = document.getElementById("previewframe");
       previewFrame.style.width = widthHalf - 2 - 10 + "px"; // -2 for scroll bar & -10 for left offset
       previewFrame.style.height = height + "px";
-      previewFrame.style.left = "10px"; // offset
+      previewFrame.style.left = leftRight === false ? "10px" : widthHalf + "px";
       previewFrame.style.top = "0px";
 
       // Resize tool panel
-      document.getElementById("toolpanel").style.width = widthHalf + "px";
+      toolPanel.style.width = widthHalf + "px";
+      toolPanel.style.left = leftRight === false ? widthHalf + "px" : "0px";
     }
+
+    window.jsm.resize = resize;
 
     $(window).resize(function() {
       resize();
