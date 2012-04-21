@@ -1018,6 +1018,25 @@ else
             return text;
         }
 
+        function _DoCodeSpansGollum(text) {
+            //
+            // Same as _DoCode except code is wrapped in pre for proper multiline.
+            // All regex set to use 'm' multiline option.
+            //
+            text = text.replace(/(^|[^\\])(`+)([^\r]*?[^`])\2(?!`)/gm,
+                function (wholeMatch, m1, m2, m3, m4) {
+                    var c = m3;
+                    c = c.replace(/^([ \t]*)/gm, ""); // leading whitespace
+                    c = c.replace(/[ \t]*$/gm, ""); // trailing whitespace
+                    c = _EncodeCode(c);
+                    c = c.replace(/:\/\//gm, "~P"); // to prevent auto-linking. Not necessary in code *blocks*, but in code spans. Will be converted back after the auto-linker runs.
+                    return m1 + "<pre><code>" + c + "</code></pre>";
+                }
+            );
+
+            return text;
+        }
+
         function _EncodeCode(text) {
             //
             // Encode/escape certain characters inside Markdown code runs.
@@ -1127,6 +1146,8 @@ else
             // Wrap <p> tags.
             //
             var end = grafs.length;
+            var extendedString = "";
+            var isExtended = false;
             for (var i = 0; i < end; i++) {
                 var str = grafs[i];
 
@@ -1135,6 +1156,26 @@ else
                     grafsOut.push(str);
                 }
                 else if (/\S/.test(str)) {
+                    // Detect start of gollum code.
+                    if (str.substring(0,3) === "```") {
+                      isExtended = true;
+                    }
+
+                    if (isExtended === true) {
+                      // Detect end of gollum code.
+                      var strLength = str.length;
+                      if (str.substring(strLength-3, strLength) === "```") {
+                        isExtended = false;
+                        str = extendedString + str;
+                        str = _DoCodeSpansGollum(str);
+                        grafsOut.push(str);
+                        extendedString = "";
+                      }
+
+                      extendedString += str + "\n\n";
+                      continue;
+                    }
+
                     str = _RunSpanGamut(str);
                     str = str.replace(/^([ \t]*)/g, "<p>");
                     str += "</p>"
