@@ -51,7 +51,7 @@ hljs.LANGUAGES.rust = function() {
         NUMBER,
         {
           className: 'function',
-          begin: 'fn', end: '(\\(|<)',
+          beginWithKeyword: true, end: '(\\(|<)',
           keywords: {'fn': 1},
           contains: [TITLE]
         },
@@ -60,19 +60,16 @@ hljs.LANGUAGES.rust = function() {
           begin: '#\\[', end: '\\]'
         },
         {
-          begin: 'type', end: '(=|<)',
+          beginWithKeyword: true, end: '(=|<)',
           keywords: {'type': 1},
-          contains: [TITLE]
+          contains: [TITLE],
+          illegal: '\\S'
         },
         {
-          begin: 'iface', end: '({|<)',
-          keywords: {'iface': 1},
-          contains: [TITLE]
-        },
-        {
-          begin: 'enum', end: '({|<)',
-          keywords: {'enum': 1},
-          contains: [TITLE]
+          beginWithKeyword: true, end: '({|<)',
+          keywords: {'iface': 1, 'enum': 1},
+          contains: [TITLE],
+          illegal: '\\S'
         }
       ]
     }
