@@ -1165,11 +1165,13 @@ else
                       // Detect end of gollum code.
                       var strLength = str.length;
                       if (str.substring(strLength-3, strLength) === "```") {
-                        isExtended = false;
                         str = extendedString + str;
                         str = _DoCodeSpansGollum(str);
                         grafsOut.push(str);
+
+                        isExtended = false;
                         extendedString = "";
+                        continue;
                       }
 
                       extendedString += str + "\n\n";
