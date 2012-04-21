@@ -84,7 +84,7 @@
     <script src="js/ace/mode-markdown.js" type="text/javascript" charset="utf-8"></script>
     <script src="js/pagedown/Markdown.Converter.js" type="text/javascript" charset="utf-8"></script>
     <script src="js/pagedown/Markdown.Sanitizer.js" type="text/javascript" charset="utf-8"></script>
-    <script src="js/jquery/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/jquery/jquery-1.7.2.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="js/highlightjs/highlight.pack.js" type="text/javascript" charset="utf-8"></script>
     </head>
     
@@ -231,6 +231,14 @@ var previewSet = function (text) {
     }
 };
 
+var languages = [ "1c", "actionscript", "apache", "avrasm", "axapta",
+"bash", "cmake", "coffeescript", "cpp", "cs", "css", "delphi", "diff",
+"django", "d", "dos", "erlang", "erlang-repl", "go", "haskell", "ini",
+"java", "javascript", "languages", "lisp", "lua", "markdown", "matlab",
+"mel", "nginx", "objectivec", "parser3", "perl", "php", "profile",
+"python", "renderman", "ruby", "rust", "scala", "smalltalk", "sql",
+"tex", "vala", "vbscript", "vhdl", "xml" ];
+
 var makePreviewHtml = function () {
   var text = editorSession.getValue();
 
@@ -265,6 +273,10 @@ var makePreviewHtml = function () {
       var txt = element.innerHTML.split(/\b/);
       // the syntax for code highlighting means all code, even one line, contains newlines.
       if (txt.length > 0 && codeHTML.match(/\n/)) {
+        if ($.inArray(txt[0], languages) === -1) {
+          continue;
+        }
+
         element.className = txt[0] + " highlight";
         element.innerHTML = codeHTML.substring(txt[0].length);
         hljs.highlightBlock(element, "  ");
