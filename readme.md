@@ -1,4 +1,4 @@
-Client side live preview for Gollum with syntax highlighting.
+Client side live preview of Markdown for Gollum with syntax highlighting.
 
 [Click for demo](http://bootstraponline.github.com/livepreview/)
 
