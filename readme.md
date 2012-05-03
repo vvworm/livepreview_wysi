@@ -26,15 +26,13 @@ Using master branch at [237bc62f72065184b63a6fe1823912e4833d3068](https://github
     wget https://raw.github.com/ajaxorg/ace/master/build/src/theme-twilight.js
 
 ## Building highlightjs
-- Using master branch at `9a531974d3ebb3cd5c9c6c929fa7184a9852f560`.
+- Using master branch at [237bc62f72065184b63a6fe1823912e4833d3068](https://github.com/isagalaev/highlight.js/commit/237bc62f72065184b63a6fe1823912e4833d3068).
 
 - `isagalaev-highlight.js/tools$ python build.py`
 
 - Copy highlight.pack.js and languages folder to `/livepreview/js/highlightjs/`
 
-- Move `isagalaev-highlight.js/src/styles/github.css` to `/livepreview/css/highlightjs/`
-
-- Note that github.css has been customized and should not be replaced when updating the highlightjs dependency.
+- Note that github.css (`isagalaev-highlight.js/src/styles/github.css` -> `/livepreview/css/highlightjs/`)  has been customized and should not be replaced when updating the highlightjs dependency.
 
 ## jQuery & Sizzle
 Using v1.7.2
