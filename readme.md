@@ -19,7 +19,7 @@ See licenses folder for details.
 
 ## Ace
 Using master branch at [c9c811794f46a3d53b2171bc46e25e613d07d7aa](https://github.com/ajaxorg/ace/commit/c9c811794f46a3d53b2171bc46e25e613d07d7aa). Download files to `/livepreview/js/ace/`.
-
+    # working directory is /livepreview/js/ace/
     rm ace.js mode-markdown.js theme-twilight.js ;\
     wget https://raw.github.com/ajaxorg/ace/master/build/src/ace.js ;\
     wget https://raw.github.com/ajaxorg/ace/master/build/src/mode-markdown.js ;\
@@ -30,15 +30,16 @@ Using master branch at [c9c811794f46a3d53b2171bc46e25e613d07d7aa](https://github
 
 - `isagalaev-highlight.js/tools$ python build.py`
 
-- Copy highlight.pack.js and languages folder to `/livepreview/js/highlightjs/`
+- Copy highlight.pack.js and languages folder to `/livepreview/js/highlightjs/`.
 
 - Note that github.css (`isagalaev-highlight.js/src/styles/github.css` -> `/livepreview/css/highlightjs/`)  has been customized and should not be replaced when updating the highlightjs dependency.
 
 ## jQuery & Sizzle
-Using v1.7.2
+Using jQuery v1.7.2.
 
-- Download latest production version from http://jquery.com
+- Download latest production version from [jquery.com](http://www.jquery.com).
 
 ## Pagedown
 The Pagedown code used is from revision `44a4db795617`, Mar 2, 2012 (currently the newest version at the time of writing this document). Markdown.Converter.js has been enhanced to support Gollum style code highlighting.
+
 `https://code.google.com/p/pagedown/source/detail?r=44a4db795617288ae9817c90735fb497891ede23`
