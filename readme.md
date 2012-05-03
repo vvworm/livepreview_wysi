@@ -36,7 +36,8 @@ Using master branch at [c9c811794f46a3d53b2171bc46e25e613d07d7aa](https://github
 
 ## jQuery & Sizzle
 Using v1.7.2
-Download latest production version from http://jquery.com
+
+- Download latest production version from http://jquery.com
 
 ## Pagedown
 The Pagedown code used is from revision `44a4db795617`, Mar 2, 2012 (currently the newest version at the time of writing this document). Markdown.Converter.js has been enhanced to support Gollum style code highlighting.
