@@ -1,6 +1,6 @@
 Client side live preview of Markdown for Gollum with syntax highlighting.
 
-[Click for demo](http://bootstraponline.github.com/livepreview/)
+[Click for demo.](http://bootstraponline.github.com/livepreview/)
 
 Uses code/assets from:
 
@@ -18,7 +18,7 @@ See licenses folder for details.
 # Dependency Notes
 
 ## Ace
-Using master branch at [c9c811794f46a3d53b2171bc46e25e613d07d7aa](https://github.com/ajaxorg/ace/commit/c9c811794f46a3d53b2171bc46e25e613d07d7aa). Download files to `/livepreview/js/ace/`.
+Using master branch at [c9c811794f46a3d53b2171bc46e25e613d07d7aa](https://github.com/ajaxorg/ace/commit/c9c811794f46a3d53b2171bc46e25e613d07d7aa). Download files to: `/livepreview/js/ace/`
 
     # working directory is /livepreview/js/ace/
     rm ace.js mode-markdown.js theme-twilight.js ;\
@@ -31,7 +31,7 @@ Using master branch at [c9c811794f46a3d53b2171bc46e25e613d07d7aa](https://github
 
 - `isagalaev-highlight.js/tools$ python build.py`
 
-- Copy highlight.pack.js and languages folder to `/livepreview/js/highlightjs/`.
+- Copy highlight.pack.js and languages folder to: `/livepreview/js/highlightjs/`
 
 - Note that github.css (`isagalaev-highlight.js/src/styles/github.css` -> `/livepreview/css/highlightjs/`)  has been customized and should not be replaced when updating the highlightjs dependency.
 
