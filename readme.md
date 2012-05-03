@@ -18,8 +18,9 @@ See licenses folder for details.
 # Dependency Notes
 
 ## Ace
-Using master branch at `4905bd45c462eec14f552fbbd282eb1fd76b6aa4`. Download files to `/livepreview/js/ace/`.
+Using master branch at [237bc62f72065184b63a6fe1823912e4833d3068](https://github.com/isagalaev/highlight.js/commit/237bc62f72065184b63a6fe1823912e4833d3068). Download files to `/livepreview/js/ace/`.
 
+    rm ace.js mode-markdown.js theme-twilight.js ;\
     wget https://raw.github.com/ajaxorg/ace/master/build/src/ace.js ;\
     wget https://raw.github.com/ajaxorg/ace/master/build/src/mode-markdown.js ;\
     wget https://raw.github.com/ajaxorg/ace/master/build/src/theme-twilight.js
