@@ -128,7 +128,7 @@ a.absent {
   margin: 15px 0;
 }
 .markdown-body hr {
-  background: transparent url('/images/dirty-shade.png') repeat-x 0 0;
+  background: transparent url('../../images/dirty-shade.png') repeat-x 0 0;
   border: 0 none;
   color: #ccc;
   height: 4px;
