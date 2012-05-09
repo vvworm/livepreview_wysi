@@ -163,6 +163,11 @@ a.absent {
   margin-left: 2.6em;
 }
 
+/* Fix nested lists. */
+li ul {
+  padding-left: 30px !important;
+}
+
   /* Nested Lists */
   #previewframe ul li, 
   #previewframe ol li, 
