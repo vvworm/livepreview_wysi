@@ -270,7 +270,7 @@ var makePreviewHtml = function () {
         // txt[0] = "`"; txt[1] = "ruby"
         if ($.inArray(txt[1], languages) === -1) {
           element.innerHTML = codeHTML.substring(1).trim();
-          element.className = "nohighlight";
+          hljs.highlightBlock(element, "  ");
           continue;
         }
 
@@ -280,7 +280,7 @@ var makePreviewHtml = function () {
         hljs.highlightBlock(element, "  ");
       } else {
         element.innerHTML = codeHTML.substring(1).trim();
-        element.className = "nohighlight";
+        hljs.highlightBlock(element, "  ");
       }
     }
   }
