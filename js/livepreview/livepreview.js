@@ -4,6 +4,7 @@ window.onbeforeunload = function(){ return "Leaving Live Preview will discard al
 var converter = Markdown.getSanitizingConverter();
 var editor = ace.edit("editor");
 var editorSession = editor.getSession();
+$.editorSession = editorSession; // for testing
 var editorContainer = editor.container;
 var preview = document.getElementById("previewframe");
 var content = document.getElementById("contentframe");
@@ -41,6 +42,7 @@ initAce(editor, editorSession);
 // Setup comment ace.
 var commentEditor = ace.edit("comment");
 var commentEditorSession = commentEditor.getSession();
+$.commentSession = commentEditorSession; // for testing
 var commentEditorContainer = commentEditor.container;
 
 initAce(commentEditor, commentEditorSession);
