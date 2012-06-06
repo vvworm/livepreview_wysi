@@ -272,23 +272,24 @@ var applyTimeout = function () {
 
   var isCommentHidden = true;
 
-  var darknessStyleVisibility = darkness.style.visibility;
-  var commentToolPanelStyleVisibility = commentToolPanel.style.visibility;
-  var commentStyleVisibility = comment.style.visibility;
+  // var style = darkness.style.visibility will not update visibility.
+  var darknessStyle = darkness.style;
+  var commentToolPanelStyle = commentToolPanel.style;
+  var commentStyle = comment.style;
 
   function hideCommentWindow() {
     isCommentHidden = true;
-    darknessStyleVisibility =
-    commentToolPanelStyleVisibility =
-    commentStyleVisibility = 'hidden';
+    darknessStyle.visibility =
+    commentToolPanelStyle.visibility =
+    commentStyle.visibility = 'hidden';
   }
 
   // Show dimmer, comment tool panel, and comment.
   $( '#savecomment' ).click( function() {
     isCommentHidden = false;
-    darknessStyleVisibility =
-    commentToolPanelStyleVisibility =
-    commentStyleVisibility = 'visible';
+    darknessStyle.visibility =
+    commentToolPanelStyle.visibility =
+    commentStyle.visibility = 'visible';
     // Set focus so typing can begin immediately.
     commentEditor.focus();
   });
