@@ -13,19 +13,14 @@ Uses code/assets from:
 0. [pagedown](https://code.google.com/p/pagedown/)
 0. [retina_display_icon_set](http://blog.twg.ca/2010/11/retina-display-icon-set/)
 0. [debounce](https://github.com/cowboy/jquery-throttle-debounce)
+0. [requirejs](https://github.com/jrburke/requirejs)
 
 See licenses folder for details.
 
 # Dependency Notes
 
 ## Ace
-Using master branch at [c9c811794f46a3d53b2171bc46e25e613d07d7aa](https://github.com/ajaxorg/ace/commit/c9c811794f46a3d53b2171bc46e25e613d07d7aa). Download files to: `/livepreview/js/ace/`
-
-    # working directory is /livepreview/js/ace/
-    rm ace.js mode-markdown.js theme-twilight.js ;\
-    wget https://raw.github.com/ajaxorg/ace/master/build/src/ace.js ;\
-    wget https://raw.github.com/ajaxorg/ace/master/build/src/mode-markdown.js ;\
-    wget https://raw.github.com/ajaxorg/ace/master/build/src/theme-twilight.js
+Using master branch at [dbab677c413aec097bf2e7f95a9e245a4526ce88](https://github.com/ajaxorg/ace/commit/dbab677c413aec097bf2e7f95a9e245a4526ce88).
 
 ## Building highlightjs
 - Using master branch at [237bc62f72065184b63a6fe1823912e4833d3068](https://github.com/isagalaev/highlight.js/commit/237bc62f72065184b63a6fe1823912e4833d3068).
