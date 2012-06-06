@@ -278,16 +278,16 @@ var applyTimeout = function () {
 
   function hideCommentWindow() {
     isCommentHidden = true;
-    darknessStyleVisibility = 'hidden';
-    commentToolPanelStyleVisibility = 'hidden';
-    commentStyleVisibility = 'hidden';
+    darknessStyleVisibility =
+    commentToolPanelStyleVisibility =
+    commentStyleVisibility ='hidden';
   }
 
   // Show dimmer, comment tool panel, and comment.
   $( '#savecomment' ).click( function() {
     isCommentHidden = false;
-    darknessStyleVisibility = 'visible';
-    commentToolPanelStyleVisibility = 'visible';
+    darknessStyleVisibility =
+    commentToolPanelStyleVisibility =
     commentStyleVisibility = 'visible';
     // Set focus so typing can begin immediately.
     commentEditor.focus();
