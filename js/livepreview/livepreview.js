@@ -280,7 +280,7 @@ var applyTimeout = function () {
     isCommentHidden = true;
     darknessStyleVisibility =
     commentToolPanelStyleVisibility =
-    commentStyleVisibility ='hidden';
+    commentStyleVisibility = 'hidden';
   }
 
   // Show dimmer, comment tool panel, and comment.
