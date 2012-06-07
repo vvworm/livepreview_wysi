@@ -22,6 +22,8 @@ See licenses folder for details.
 ## Ace
 Using master branch at [dbab677c413aec097bf2e7f95a9e245a4526ce88](https://github.com/ajaxorg/ace/commit/dbab677c413aec097bf2e7f95a9e245a4526ce88).
 
+- Copy `ajaxorg/ace/lib/ace` to `/public/js/ace/lib/ace`
+
 ## Building highlightjs
 - Using master branch at [237bc62f72065184b63a6fe1823912e4833d3068](https://github.com/isagalaev/highlight.js/commit/237bc62f72065184b63a6fe1823912e4833d3068).
 
