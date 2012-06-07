@@ -1,6 +1,6 @@
 Client side live preview of Markdown for Gollum with syntax highlighting.
 
-[Click for demo.](http://bootstraponline.github.com/livepreview/)
+[Click for demo.](http://bootstraponline.github.com/livepreview/public)
 
 Uses code/assets from:
 
