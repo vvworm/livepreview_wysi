@@ -6,7 +6,7 @@ var win = window;
 var location = win.location;
 var doc = document;
 
-// win.onbeforeunload = function() { return 'Leaving Live Preview will discard all edits!' };
+win.onbeforeunload = function() { return 'Leaving Live Preview will discard all edits!' };
 
 var converter = Markdown.getSanitizingConverter();
 var editor = new Editor( new Renderer( doc.getElementById( 'editor' ) ));//ace.edit( 'editor' );
