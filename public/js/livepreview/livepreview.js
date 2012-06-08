@@ -19,7 +19,6 @@ var editorContainer = editor.container;
 var preview = doc.getElementById( 'previewframe' );
 var content = doc.getElementById( 'contentframe' );
 var toolPanel = doc.getElementById( 'toolpanel' );
-var toolPanelStyle = toolPanel.style;
 var comment = doc.getElementById( 'comment' );
 var commentToolPanel = doc.getElementById( 'commenttoolpanel' );
 // dim the page
@@ -373,7 +372,8 @@ var applyTimeout = function () {
 
      // Resize tool panel
     var toolPanelStyle = 'width:' + widthHalf + 'px;' +
-      'left:' + (leftRight === false ? widthHalf + 'px;' : '0px;');
+      'left:' + (leftRight === false ? widthHalf + 'px;' : '0px;') +
+      'visibility: visible;';
     cssSet( toolPanel, toolPanelStyle );
 
     // Resize comment related elements.
@@ -415,7 +415,4 @@ var applyTimeout = function () {
 
   // resize for the intial page load
   resize();
-
-  // and show the tool panel after resizing so it doesn't flicker.
-  toolPanelStyle.visibility = 'visible';
 });
