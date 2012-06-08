@@ -25,15 +25,6 @@ Using master branch at [dbab677c413aec097bf2e7f95a9e245a4526ce88](https://github
 - `public/js/ace/lib/ace/ext/static_highlight.js` has been modified to disable gutter rendering. [#799](https://github.com/ajaxorg/ace/pull/799)
 - `public/js/ace/lib/ace/theme/github.css` `public/js/ace/lib/ace/theme/github.js` are custom theme files. [#798](https://github.com/ajaxorg/ace/pull/798)
 
-## Building highlightjs
-- Using master branch at [237bc62f72065184b63a6fe1823912e4833d3068](https://github.com/isagalaev/highlight.js/commit/237bc62f72065184b63a6fe1823912e4833d3068).
-
-- `isagalaev-highlight.js/tools$ python build.py`
-
-- Copy highlight.pack.js and languages folder to: `/livepreview/js/highlightjs/`
-
-- Note that github.css (`isagalaev-highlight.js/src/styles/github.css` -> `/livepreview/css/highlightjs/`)  has been customized and should not be replaced when updating the highlightjs dependency.
-
 ## jQuery & Sizzle
 Using jQuery v1.7.2.
 
