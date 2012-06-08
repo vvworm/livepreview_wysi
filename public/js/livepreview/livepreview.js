@@ -1,6 +1,9 @@
-require([ 'ace/editor', 'ace/virtual_renderer', 'ace/mode/markdown', 'ace/theme/twilight'], function() {
-var Renderer = require("ace/virtual_renderer").VirtualRenderer;
-var Editor = require("ace/editor").Editor;
+require([ 'ace/ext/static_highlight', 'ace/theme/github', 'ace/editor', 'ace/virtual_renderer', 'ace/mode/markdown', 'ace/theme/twilight',
+'ace/mode/c_cpp', 'ace/mode/clojure', 'ace/mode/coffee', 'ace/mode/coldfusion', 'ace/mode/csharp', 'ace/mode/css', 'ace/mode/diff', 'ace/mode/golang', 'ace/mode/groovy', 'ace/mode/haxe', 'ace/mode/html', 'ace/mode/java', 'ace/mode/javascript', 'ace/mode/json', 'ace/mode/latex', 'ace/mode/less', 'ace/mode/liquid', 'ace/mode/lua', 'ace/mode/markdown', 'ace/mode/ocaml', 'ace/mode/perl', 'ace/mode/pgsql', 'ace/mode/php', 'ace/mode/powershell', 'ace/mode/python', 'ace/mode/ruby', 'ace/mode/scad', 'ace/mode/scala', 'ace/mode/scss', 'ace/mode/sh', 'ace/mode/sql', 'ace/mode/svg', 'ace/mode/textile', 'ace/mode/text', 'ace/mode/xml', 'ace/mode/xquery', 'ace/mode/yaml'
+], function() {
+var Renderer = require( 'ace/virtual_renderer' ).VirtualRenderer;
+var Editor = require( 'ace/editor' ).Editor;
+var dom = require( 'ace/lib/dom' );
 
 var win = window;
 var location = win.location;
@@ -16,6 +19,7 @@ var editorContainer = editor.container;
 var preview = doc.getElementById( 'previewframe' );
 var content = doc.getElementById( 'contentframe' );
 var toolPanel = doc.getElementById( 'toolpanel' );
+var toolPanelStyle = toolPanel.style;
 var comment = doc.getElementById( 'comment' );
 var commentToolPanel = doc.getElementById( 'commenttoolpanel' );
 // dim the page
@@ -169,13 +173,47 @@ var previewSet = function( text ) {
   }
 };
 
-var languages = [ '1c', 'actionscript', 'apache', 'avrasm', 'axapta',
-'bash', 'cmake', 'coffeescript', 'cpp', 'cs', 'css', 'delphi', 'diff',
-'django', 'd', 'dos', 'erlang', 'erlang-repl', 'go', 'haskell', 'ini',
-'java', 'javascript', 'languages', 'lisp', 'lua', 'markdown', 'matlab',
-'mel', 'nginx', 'objectivec', 'parser3', 'perl', 'php', 'profile',
-'python', 'renderman', 'ruby', 'rust', 'scala', 'smalltalk', 'sql',
-'tex', 'vala', 'vbscript', 'vhdl', 'xml' ];
+var languages = [ 'c_cpp', 'clojure', 'coffee', 'coldfusion',
+ 'csharp', 'css', 'diff', 'golang', 'groovy', 'haxe', 'html',
+ 'java', 'javascript', 'json', 'latex', 'less', 'liquid',
+ 'lua', 'markdown', 'ocaml', 'perl', 'pgsql', 'php', 'powershell',
+ 'python', 'ruby', 'scad', 'scala', 'scss', 'sh', 'sql', 'svg',
+ 'textile', 'text', 'xml', 'xquery', 'yaml' ];
+
+var staticHighlight = require( 'ace/ext/static_highlight' );
+var githubTheme = require( 'ace/theme/github' );
+var langModes = {};
+
+(function() {
+var languagesLength = languages.length;
+for ( var a = 0; a < languagesLength; a++ ) {
+  var name = languages[ a ];
+  langModes[ name ] = false;
+}
+})();
+
+function getLang( language ) {
+  var mode = langModes[ language ];
+
+  if ( mode ) {
+    return mode;
+  }
+
+  // require.Mode must be wrapped in parens.
+  mode = new ( require( 'ace/mode/' + language ).Mode )();
+
+  return mode;
+}
+
+function highlight( element, language ) {
+  var data = element.innerHTML;
+  var mode = getLang( language );
+  var color = staticHighlight.render( data, mode, githubTheme );
+
+  var newDiv = doc.createElement('div');
+  newDiv.innerHTML = color.html;
+  element.parentNode.replaceChild( newDiv, element );
+}
 
 var makePreviewHtml = function () {
   var text = editorSession.getValue();
@@ -203,10 +241,13 @@ var makePreviewHtml = function () {
   // highlight code blocks.
   var codeElements = preview.getElementsByTagName( 'pre' );
   var codeElementsLength = codeElements.length;
-  var hlSpace = '  ';
+  var skipped = 0;
+
   if ( codeElementsLength > 0 ) {
-    for (var idx = 0; idx < codeElementsLength; idx++) {
-      var element = codeElements[ idx ];
+    for ( var idx = 0; idx < codeElementsLength; idx++ ) {
+      // highlight removes an element so 0 is always the correct index.
+      // Skipped tags are not removed so they must be added.
+      var element = codeElements[ 0 + skipped ];
       var codeHTML = element.innerHTML;
 
        // Only use pre tags marked containing code.
@@ -215,23 +256,23 @@ var makePreviewHtml = function () {
 
       var txt = codeHTML.split( /\b/ );
       // the syntax for code highlighting means all code, even one line, contains newlines.
-      if (txt.length > 1 && codeHTML.match( /\n/ )) {
-        var txtOne = txt[ 1 ];
+      if ( txt.length > 1 && codeHTML.match( /\n/ ) ) {
+        var declaredLanguage = txt[ 1 ];
         // txt[0] must be '`'
         // txt[0] = '`'; txt[1] = 'ruby'
-        if (txt[0] !== '`' || $.inArray( txtOne, languages ) === -1) {
-          element.innerHTML = codeHTML.substring( 1 ).trim();
-          hljs.highlightBlock( element, hlSpace );
+        if ( txt[ 0 ] !== '`' || $.inArray( declaredLanguage, languages ) === -1 ) {
+          // Unsupported language.
+          skipped++;
           continue;
         }
-
-        element.className = txtOne + ' highlight';
         // length + 1 for the marker character.
-        element.innerHTML = codeHTML.substring( txtOne.length + 1).trim();
-        hljs.highlightBlock( element, hlSpace );
+        element.innerHTML = codeHTML.substring( declaredLanguage.length + 1 ).trim();
+        // highlight: element
+        highlight( element, declaredLanguage );
       } else {
+        // Highlighting is not for `code` inline syntax. For example `puts "string"`.
+        skipped++;
         element.innerHTML = codeHTML.substring( 1 ).trim();
-        hljs.highlightBlock( element, hlSpace );
       }
     }
   }
@@ -373,4 +414,7 @@ var applyTimeout = function () {
 
   // resize for the intial page load
   resize();
+
+  // and show the tool panel after resizing so it doesn't flicker.
+  toolPanelStyle.visibility = 'visible';
 });

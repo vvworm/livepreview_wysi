@@ -74,7 +74,7 @@ exports.render = function(input, mode, theme, lineStart) {
     for(var ix = 0; ix < length; ix++) {
         var lineTokens = session.getTokens(ix);
         stringBuilder.push("<div class='ace_line'>");
-        stringBuilder.push("<span class='ace_gutter ace_gutter-cell' unselectable='on'>" + (ix + lineStart) + "</span>");
+        // stringBuilder.push("<span class='ace_gutter ace_gutter-cell' unselectable='on'>" + (ix + lineStart) + "</span>");
         textLayer.$renderLine(stringBuilder, 0, lineTokens, true);
         stringBuilder.push("</div>");
     }
