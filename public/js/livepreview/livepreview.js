@@ -263,6 +263,7 @@ var makePreviewHtml = function () {
         if ( txt[ 0 ] !== '`' || $.inArray( declaredLanguage, languages ) === -1 ) {
           // Unsupported language.
           skipped++;
+          element.innerHTML = codeHTML.substring( 1 ).trim();
           continue;
         }
         // length + 1 for the marker character.
