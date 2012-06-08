@@ -372,8 +372,7 @@ var applyTimeout = function () {
 
      // Resize tool panel
     var toolPanelStyle = 'width:' + widthHalf + 'px;' +
-      'left:' + (leftRight === false ? widthHalf + 'px;' : '0px;') +
-      'visibility: visible;';
+      'left:' + (leftRight === false ? widthHalf + 'px;' : '0px;');
     cssSet( toolPanel, toolPanelStyle );
 
     // Resize comment related elements.

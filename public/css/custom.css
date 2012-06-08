@@ -66,7 +66,6 @@ so editor doesn't display in the background. */
   padding: 5px 0;
   margin: 0;
   text-align: center;
-  visibility: hidden;
 }
 
 .toolpanel.edit a.edit {
