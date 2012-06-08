@@ -31,9 +31,9 @@ Using jQuery v1.7.2.
 - Download latest production version from [jquery.com](http://www.jquery.com).
 
 ## Pagedown
-The [Pagedown code](https://code.google.com/p/pagedown/source/list) used is from revision `44a4db795617`, Mar 2, 2012. Markdown.Converter.js has been enhanced to support Gollum style code highlighting. Markdown.Sanitizer.js has been fixed to not remove h4-6.
+The [Pagedown code](https://code.google.com/p/pagedown/source/list) used is from revision `3151a581819f39123b0b5fd1ca9e26cebdcaa873`, May 31, 2012. Markdown.Converter.js has been enhanced to support Gollum style code highlighting. Markdown.Sanitizer.js has been fixed to not remove h4-6.
 
-`https://code.google.com/p/pagedown/source/detail?r=44a4db795617288ae9817c90735fb497891ede23`
+https://code.google.com/p/pagedown/source/detail?r=3151a581819f39123b0b5fd1ca9e26cebdcaa873
 
-- The h1-6 fix has been submitted for upstream inclusion: [#29](https://code.google.com/p/pagedown/issues/detail?id=29)
+- The h4-6 fix has been submitted for upstream inclusion: [#29](https://code.google.com/p/pagedown/issues/detail?id=29)
 - livepreview has various additions to pagedown so it can't be replaced by upstream unpatched.
