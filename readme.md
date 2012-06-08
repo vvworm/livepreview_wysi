@@ -22,8 +22,8 @@ See licenses folder for details.
 Using master branch at [dbab677c413aec097bf2e7f95a9e245a4526ce88](https://github.com/ajaxorg/ace/commit/dbab677c413aec097bf2e7f95a9e245a4526ce88).
 
 - Copy `ajaxorg/ace/lib/ace` to `/public/js/ace/lib/ace`
-- `public/js/ace/lib/ace/ext/static_highlight.js` has been modified to disable gutter rendering.
-- `public/js/ace/lib/ace/theme/github.css` `public/js/ace/lib/ace/theme/github.js` are custom theme files.
+- `public/js/ace/lib/ace/ext/static_highlight.js` has been modified to disable gutter rendering. [#799](https://github.com/ajaxorg/ace/pull/799)
+- `public/js/ace/lib/ace/theme/github.css` `public/js/ace/lib/ace/theme/github.js` are custom theme files. [#798](https://github.com/ajaxorg/ace/pull/798)
 
 ## Building highlightjs
 - Using master branch at [237bc62f72065184b63a6fe1823912e4833d3068](https://github.com/isagalaev/highlight.js/commit/237bc62f72065184b63a6fe1823912e4833d3068).
