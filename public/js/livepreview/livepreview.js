@@ -205,7 +205,10 @@ function getLang( language ) {
 }
 
 function highlight( element, language ) {
-  var data = element.innerHTML;
+  // Highlighting requires .innerText not
+  // .innerHTML. It's the difference between
+  // '>' and '&gt;'.
+  var data = element.innerText;
   var mode = getLang( language );
   // input, mode, theme, lineStart, disableGutter
   var color = staticHighlight.render( data, mode, githubTheme, 1, true );
