@@ -258,6 +258,15 @@ var makePreviewHtml = function () {
       // the syntax for code highlighting means all code, even one line, contains newlines.
       if ( txt.length > 1 && codeHTML.match( /\n/ ) ) {
         var declaredLanguage = txt[ 1 ];
+
+        // GitHub supports 'c', 'c++', 'cpp'
+        // which must trigger the 'c_cpp' mode in Ace.
+        if ( declaredLanguage === 'c'   ||
+             declaredLanguage === 'c++' ||
+             declaredLanguage === 'cpp' ) {
+          declaredLanguage = 'c_cpp';
+        }
+
         // txt[0] must be '`'
         // txt[0] = '`'; txt[1] = 'ruby'
         if ( txt[ 0 ] !== '`' || $.inArray( declaredLanguage, languages ) === -1 ) {
