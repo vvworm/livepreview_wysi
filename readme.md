@@ -22,8 +22,10 @@ See licenses folder for details.
 Using master branch at [dbab677c413aec097bf2e7f95a9e245a4526ce88](https://github.com/ajaxorg/ace/commit/dbab677c413aec097bf2e7f95a9e245a4526ce88).
 
 - Copy `ajaxorg/ace/lib/ace` to `/public/js/ace/lib/ace`
-- `public/js/ace/lib/ace/ext/static_highlight.js` has been modified to disable gutter rendering. [#799](https://github.com/ajaxorg/ace/pull/799)
-- `public/js/ace/lib/ace/theme/github.css` `public/js/ace/lib/ace/theme/github.js` are custom theme files. [#798](https://github.com/ajaxorg/ace/pull/798)
+
+All changes to Ace for livepreview have been upstreamed.
+- Gutter control [#799](https://github.com/ajaxorg/ace/pull/799)
+- GitHub theme [#798](https://github.com/ajaxorg/ace/pull/798)
 
 ## jQuery & Sizzle
 Using jQuery v1.7.2.

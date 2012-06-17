@@ -207,7 +207,8 @@ function getLang( language ) {
 function highlight( element, language ) {
   var data = element.innerHTML;
   var mode = getLang( language );
-  var color = staticHighlight.render( data, mode, githubTheme );
+  // input, mode, theme, lineStart, disableGutter
+  var color = staticHighlight.render( data, mode, githubTheme, 1, true );
 
   var newDiv = doc.createElement('div');
   newDiv.innerHTML = color.html;
