@@ -261,13 +261,14 @@ var makePreviewHtml = function () {
       // the syntax for code highlighting means all code, even one line, contains newlines.
       if ( txt.length > 1 && codeHTML.match( /\n/ ) ) {
         var declaredLanguage = txt[ 1 ];
+        var aceMode = declaredLanguage;
 
         // GitHub supports 'c', 'c++', 'cpp'
         // which must trigger the 'c_cpp' mode in Ace.
         if ( declaredLanguage === 'c'   ||
              declaredLanguage === 'c++' ||
              declaredLanguage === 'cpp' ) {
-          declaredLanguage = 'c_cpp';
+          aceMode = 'c_cpp';
         }
 
         // txt[0] must be '`'
@@ -281,7 +282,7 @@ var makePreviewHtml = function () {
         // length + 1 for the marker character.
         element.innerHTML = codeHTML.substring( declaredLanguage.length + 1 ).trim();
         // highlight: element
-        highlight( element, declaredLanguage );
+        highlight( element, aceMode );
       } else {
         // Highlighting is not for `code` inline syntax. For example `puts "string"`.
         skipped++;
