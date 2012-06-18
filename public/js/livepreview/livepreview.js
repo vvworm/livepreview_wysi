@@ -209,7 +209,8 @@ function highlight( element, language ) {
   // Highlighting requires .innerText not
   // .innerHTML. It's the difference between
   // '>' and '&gt;'.
-  var data = element.innerText;
+  // Firefox does not support innerText.
+  var data = element.innerText || element.textContent;
   var mode = getLang( language );
   // input, mode, theme, lineStart, disableGutter
   var color = staticHighlight.render( data, mode, githubTheme, 1, true );
