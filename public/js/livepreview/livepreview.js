@@ -266,10 +266,17 @@ var makePreviewHtml = function () {
 
         // GitHub supports 'c', 'c++', 'cpp'
         // which must trigger the 'c_cpp' mode in Ace.
-        if ( declaredLanguage === 'c'   ||
-             declaredLanguage === 'c++' ||
-             declaredLanguage === 'cpp' ) {
+        if ( declaredLanguage === 'cpp' ) {
           aceMode = 'c_cpp';
+        }
+
+        // '`c++'.split( /\b/ )
+        // ["`", "c", "++"]
+        if ( declaredLanguage === 'c' ) {
+          aceMode = 'c_cpp';
+          if ( txt.length > 2 && txt[ 2 ] === '++' ) {
+            declaredLanguage += '++';
+          }
         }
 
         // txt[0] must be '`'
