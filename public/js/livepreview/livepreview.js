@@ -274,7 +274,7 @@ var makePreviewHtml = function () {
         // ["`", "c", "++"]
         if ( declaredLanguage === 'c' ) {
           aceMode = 'c_cpp';
-          if ( txt.length > 2 && txt[ 2 ] === '++' ) {
+          if ( txt.length > 2 && txt[ 2 ].substring(0,2) === '++' ) {
             declaredLanguage += '++';
           }
         }
