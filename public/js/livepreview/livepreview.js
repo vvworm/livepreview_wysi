@@ -172,7 +172,8 @@ var previewSet = function( text ) {
   }
 };
 
-var languages = [ 'c_cpp', 'clojure', 'coffee', 'coldfusion',
+// 'c', 'c++', 'cpp' are github specific and transformed to c_cpp for Ace.
+var languages = [ 'c', 'c++', 'cpp', 'clojure', 'coffee', 'coldfusion',
  'csharp', 'css', 'diff', 'golang', 'groovy', 'haxe', 'html',
  'java', 'javascript', 'json', 'latex', 'less', 'liquid',
  'lua', 'markdown', 'ocaml', 'perl', 'pgsql', 'php', 'powershell',
