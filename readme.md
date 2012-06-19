@@ -38,4 +38,4 @@ The [Pagedown code](https://code.google.com/p/pagedown/source/list) used is from
 https://code.google.com/p/pagedown/source/detail?r=3151a581819f39123b0b5fd1ca9e26cebdcaa873
 
 - The h4-6 fix has been submitted for upstream inclusion. [#29](https://code.google.com/p/pagedown/issues/detail?id=29)
-- livepreview has various additions to pagedown so it can't be replaced by upstream unpatched.
+- livepreview has various additions to pagedown for GitHub specific markup so it can't be replaced by upstream unpatched.
