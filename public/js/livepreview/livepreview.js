@@ -224,7 +224,7 @@ function highlight( element, language ) {
 
   var newDiv = doc.createElement('div');
   newDiv.innerHTML = color.html;
-  element.parentNode.replaceChild( newDiv, element );
+  element.parentNode.parentNode.replaceChild( newDiv, element.parentNode );
 }
 
 var makePreviewHtml = function () {
@@ -268,50 +268,38 @@ console.log( e );
     for ( var idx = 0; idx < codeElementsLength; idx++ ) {
       // highlight removes an element so 0 is always the correct index.
       // Skipped tags are not removed so they must be added.
-      var element = codeElements[ 0 + skipped ];
+      var element = codeElements[ 0 + skipped ].firstChild;
+      if ( element == undefined) {
+        return;
+      }
       var codeHTML = element.innerHTML;
-
-       // Only use pre tags marked containing code.
-      if ( codeHTML[ 0 ] !== '`' )
-       continue;
-
+      if ( codeHTML == undefined) {
+        return;
+      }
       var txt = codeHTML.split( /\b/ );
       // the syntax for code highlighting means all code, even one line, contains newlines.
       if ( txt.length > 1 && codeHTML.match( /\n/ ) ) {
-        var declaredLanguage = txt[ 1 ];
+        var declaredLanguage = element.className.toLowerCase();
         var aceMode = declaredLanguage;
 
         // GitHub supports 'c', 'c++', 'cpp'
         // which must trigger the 'c_cpp' mode in Ace.
-        if ( declaredLanguage === 'cpp' ) {
+        if ( declaredLanguage === 'c'   ||
+             declaredLanguage === 'c++' ||
+             declaredLanguage === 'cpp' ) {
           aceMode = 'c_cpp';
         }
 
-        // '`c++'.split( /\b/ )
-        // ["`", "c", "++"]
-        if ( declaredLanguage === 'c' ) {
-          aceMode = 'c_cpp';
-          if ( txt.length > 2 && txt[ 2 ].substring( 0, 2 ) === '++' ) {
-            declaredLanguage += '++';
-          }
-        }
-
-        // txt[0] must be '`'
-        // txt[0] = '`'; txt[1] = 'ruby'
-        if ( txt[ 0 ] !== '`' || $.inArray( declaredLanguage, languages ) === -1 ) {
+        if ( $.inArray( declaredLanguage, languages ) === -1 ) {
           // Unsupported language.
           skipped++;
-          element.innerHTML = codeHTML.substring( 1 ).trim();
           continue;
         }
-        // length + 1 for the marker character.
-        element.innerHTML = codeHTML.substring( declaredLanguage.length + 1 ).trim();
         // highlight: element
         highlight( element, aceMode );
       } else {
         // Highlighting is not for `code` inline syntax. For example `puts "string"`.
         skipped++;
-        element.innerHTML = codeHTML.substring( 1 ).trim();
       }
     }
   }
