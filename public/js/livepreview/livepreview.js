@@ -231,6 +231,7 @@ var makePreviewHtml = function () {
   var text = editorSession.getValue();
 
   if ( text == undefined || text == '' ) {
+    previewSet( '' );
     return;
   }
 
