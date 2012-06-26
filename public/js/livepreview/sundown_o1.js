@@ -903,6 +903,7 @@ function _str_to_html($in) {
   _sd_markdown_free($6);
   _bufrelease($2);
   var $11 = _bufcstr($4);
+  _bufrelease($4);
   STACKTOP = __stackBase__;
   return $11;
 }
