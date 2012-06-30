@@ -257,7 +257,8 @@ console.log( e );
   // Update the text using feature detection to support IE.
   // preview.innerHTML = text; // this doesn't work on IE.
   previewSet( text );
-  MathJax.Hub.Typeset( content );
+  // MathJax is loaded asynchronously.
+  if (typeof MathJax != 'undefined') { MathJax.Hub.Typeset( content ); }
 
   // highlight code blocks.
   var codeElements = preview.getElementsByTagName( 'pre' );
