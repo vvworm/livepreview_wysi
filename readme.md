@@ -17,6 +17,16 @@ Uses code/assets from:
 
 See licenses folder for details.
 
+# Updating gollum
+
+ - /public/css/custom.css (not css/gollum/)
+ - /public/images/*
+ - /public/js/*
+ - /public/licenses/*
+ - /public/index.html
+ - readme.md
+ - replace template.css link in index.html
+
 # Dependency Notes
 
 ## Ace
