@@ -14,7 +14,7 @@ function pageName() {
 
 // Fall back to old edit mode on browsers that do not support typed arrays.
 if ( typeof Int32Array == 'undefined' ) {
-  win.location = location.protocol + '//' + location.host + '/edit/' + pageName;
+  win.location = location.protocol + '//' + location.host + '/edit/' + pageName();
 }
 })(window);
 </script>
