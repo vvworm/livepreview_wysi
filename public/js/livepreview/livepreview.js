@@ -7,7 +7,7 @@ var _str_to_html = Module['_str_to_html'];
 var malloc = Module._malloc;
 var realloc = Module._realloc;
 var writeStringToMemory = Module.writeStringToMemory;
-var allocSize = 1024;
+var allocSize = 2048;
 var pointer = malloc( allocSize ) ;
 // end emscripten
 
