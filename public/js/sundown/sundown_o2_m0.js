@@ -455,7 +455,7 @@ Module._str_to_html = (function(b) {
   for (var g = d >> 2, h = f + 26; f < h; f++, g++) {
     v[g] = v[f];
   }
-  a = Ac(479, 16, d, a);
+  a = Ac(351, 16, d, a);
   Bc(e, b, sc(b), a);
   b = a + 408 | 0;
   f = a + 416 | 0;
