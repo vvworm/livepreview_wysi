@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Live Preview 0</title>
+<title>Live Preview</title>
 <script>
 (function( win ){
 var location = win.location;
@@ -28,7 +28,7 @@ if ( typeof Int32Array == 'undefined' ) {
 <body>
 <div id='editor'></div>
 
-<div id='previewframe'><div id='contentframe' class='markdown-body'></div></div>
+<div id='previewframe'><form style='width:100%;height:100%'><textarea id='contentframe' class='markdown-body' style='width:100%;height:100%'></textarea></form></div>
 <!-- tool panel from notepage.es. save & savecomment icons from Retina Display Icon Set. -->  
 <div id='toolpanel' class='toolpanel edit' style='width: 500px; right: 0px; visibility: hidden;'>
   <a id='save' class='edit'><img src='images/save_24.png' alt='Save' title='Save'></a>
@@ -55,6 +55,9 @@ var require = {
 <script src='js/debounce/jquery.ba-throttle-debounce.js'></script>
 <script src='js/sundown/sundown_o2_wo.js'></script>
 <script src='js/livepreview/livepreview.js'></script>
+<script src='js/to_markdown/to-markdown.js'></script>
+<script src='js/wysihtml5/advanced.js'></script>
+<script src='js/wysihtml5/wysihtml5-0.3.0_rc2.js'></script>
 <script>(function(d,j){
 j = d.createElement('script');
 j.src = 'https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';

@@ -138,24 +138,6 @@ var oldInputText = '';
 // ---- from Markdown.Editor
 var timeout;
 
-var nonSuckyBrowserPreviewSet = function( text ) {
-  content.innerHTML = text;
-}
-
-// IE doesn't let you use innerHTML if the element is contained somewhere in a table
-// (which is the case for inline editing) -- in that case, detach the element, set the
-// value, and reattach. Yes, that *is* ridiculous.
-var ieSafePreviewSet = function( text ) {
-  var parent = content.parentNode;
-  var sibling = content.nextSibling;
-  parent.removeChild( content );
-  content.innerHTML = text;
-  if ( !sibling )
-    parent.appendChild( content );
-  else
-    parent.insertBefore( content, sibling );
-}
-
 var cssTextSet = function( element, css ){
   element.style.cssText = css;
 }
@@ -183,13 +165,8 @@ var cssSet = function( element, css ) {
 }
 
 var previewSet = function( text ) {
-  try {
-    nonSuckyBrowserPreviewSet( text );
-    previewSet = nonSuckyBrowserPreviewSet;
-  } catch ( e ) {
-    ieSafePreviewSet( text );
-    previewSet = ieSafePreviewSet;
-  }
+console.log('previewSet');
+  content.value = text;
 };
 
 // 'c', 'c++', 'cpp' are github specific and transformed to c_cpp for Ace.
@@ -343,7 +320,8 @@ var applyTimeout = function () {
 };
 
   /* Load markdown from /data/page into the ace editor. */
-  if (location.host.indexOf('github.com') === -1) {
+  if (location.host.indexOf('github.com') === -1 &&
+      location.host.indexOf('0.0.0.0') === -1) {
     jQuery.ajax( {
       type: 'GET',
       url: '/data/' + $.key( 'page' ),
@@ -465,4 +443,7 @@ var applyTimeout = function () {
 
   // resize for the intial page load
   resize();
+
+  // watch for html changes
+  $('#contentframe').bind('keyup', $.debounce( 500, function(){console.log('keyup'); editorSession.setValue(remark.render(content.value)); }) );
 });
