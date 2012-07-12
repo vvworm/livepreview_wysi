@@ -446,7 +446,7 @@ var applyTimeout = function () {
 
   function to_md() {
     console.log('keyup');
-    editorSession.setValue(toMarkdown(content.value));
+    editorSession.setValue(toMarkdown(content.value.replace(/>[\s]*</g, ">\n<")));
   };
 
   // watch for html changes
