@@ -27,7 +27,7 @@ var toMarkdown = function(string) {
         for(var i = 0; i < hLevel; i++) {
           hPrefix += '#';
         }
-        return '\n' + hPrefix + ' ' + innerHTML + '\n';
+        return hPrefix + ' ' + innerHTML;
       }
     },
     {
