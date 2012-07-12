@@ -462,6 +462,9 @@ var remark = new reMarked(options);
     editorSession.setValue(remark.render(content.value.replace(/>[\s]*</g, ">\n<")));
   };
 
+  // add default text
+  editorSession.setValue(document.getElementById('default').innerHTML);
+
   // watch for html changes
   $('#contentframe').bind('keyup', $.debounce( 500, to_md ) );
 });
