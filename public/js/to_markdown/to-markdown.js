@@ -62,6 +62,8 @@ var toMarkdown = function(string) {
         var match = attrs.match(/class=\"(.*)\"/);
         if (match != null && match.length >= 2)
           lang = match[1];
+        if (innerHTML.indexOf("\n") === -1)
+          return innerHTML ? '`' + innerHTML + '`' : '';
         // remove pre tags from code block
         return innerHTML ? '```' + lang + "\n" + innerHTML.trim() + "\n```" : '';
       }
