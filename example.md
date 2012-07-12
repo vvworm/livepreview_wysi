@@ -11,7 +11,7 @@
 
 **bold**
 
-*italic*
+_italic_
 
 `code`
 
