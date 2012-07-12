@@ -58,12 +58,10 @@ var toMarkdown = function(string) {
     {
       patterns: 'code',
       replacement: function(str, attrs, innerHTML) {
-        var lang = '';
-        var match = attrs.match(/class=\"(.*)\"/);
-        if (match != null && match.length >= 2)
-          lang = match[1];
+        // `code`
         if (innerHTML.indexOf("\n") === -1)
           return innerHTML ? '`' + innerHTML + '`' : '';
+        // all other code will live in fenced code blocks.
         // remove pre tags from code block
         return innerHTML ? '```' + lang + "\n" + innerHTML.trim() + "\n```" : '';
       }
