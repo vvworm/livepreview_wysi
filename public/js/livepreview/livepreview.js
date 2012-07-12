@@ -463,7 +463,7 @@ var remark = new reMarked(options);
   };
 
   // add default text
-  editorSession.setValue(document.getElementById('default').innerHTML);
+  editorSession.setValue(document.getElementById('default').innerText);
 
   // watch for html changes
   $('#contentframe').bind('keyup', $.debounce( 500, to_md ) );
