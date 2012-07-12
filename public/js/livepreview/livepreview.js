@@ -444,6 +444,11 @@ var applyTimeout = function () {
   // resize for the intial page load
   resize();
 
+  function to_md() {
+    console.log('keyup');
+    editorSession.setValue(toMarkdown(content.value));
+  };
+
   // watch for html changes
-  $('#contentframe').bind('keyup', $.debounce( 500, function(){console.log('keyup'); editorSession.setValue(remark.render(content.value)); }) );
+  $('#contentframe').bind('keyup', $.debounce( 500, to_md ) );
 });

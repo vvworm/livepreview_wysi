@@ -33,7 +33,7 @@ var toMarkdown = function(string) {
     {
       patterns: 'hr',
       type: 'void',
-      replacement: '\n\n* * *\n'
+      replacement: '\n\n----\n'
     },
     {
       patterns: 'a',
@@ -58,7 +58,12 @@ var toMarkdown = function(string) {
     {
       patterns: 'code',
       replacement: function(str, attrs, innerHTML) {
-        return innerHTML ? '`' + innerHTML + '`' : '';
+        var lang = '';
+        var match = attrs.match(/class=\"(.*)\"/);
+        if (match != null && match.length >= 2)
+          lang = match[1];
+        // remove pre tags from code block
+        return innerHTML ? '```' + lang + "\n" + innerHTML.trim() + "\n```" : '';
       }
     },
     {
@@ -104,13 +109,14 @@ var toMarkdown = function(string) {
   }
   
   // Pre code blocks
-  
+  /*
   string = string.replace(/<pre\b[^>]*>`([\s\S]*)`<\/pre>/gi, function(str, innerHTML) {
     innerHTML = innerHTML.replace(/^\t+/g, '  '); // convert tabs to spaces (you know it makes sense)
     innerHTML = innerHTML.replace(/\n/g, '\n    ');
     return '\n\n    ' + innerHTML + '\n';
-  });
-  
+  }); */
+  string = string.replace(/<\/?pre>/g, '');
+
   // Lists
   
   // Escape numbers that could trigger an ol
@@ -132,7 +138,7 @@ var toMarkdown = function(string) {
       
       for(i = 0, len = lis.length; i < len; i++) {
         if(lis[i]) {
-          var prefix = (listType === 'ol') ? (i + 1) + ".  " : "*   ";
+          var prefix = (listType === 'ol') ? (i + 1) + ". " : "- ";
           lis[i] = lis[i].replace(/\s*<li[^>]*>([\s\S]*)/i, function(str, innerHTML) {
             
             innerHTML = innerHTML.replace(/^\s+/, '');
