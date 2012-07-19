@@ -1,16 +1,7 @@
-require([ 'ace/ext/static_highlight', 'ace/theme/github', 'ace/editor', 'ace/virtual_renderer', 'ace/mode/markdown', 'ace/theme/twilight',
+require([ 'ace/undomanager', 'ace/ext/static_highlight', 'ace/theme/github', 'ace/editor', 'ace/virtual_renderer', 'ace/mode/markdown', 'ace/theme/twilight',
 'ace/mode/c_cpp', 'ace/mode/clojure', 'ace/mode/coffee', 'ace/mode/coldfusion', 'ace/mode/csharp', 'ace/mode/css', 'ace/mode/diff', 'ace/mode/golang', 'ace/mode/groovy', 'ace/mode/haxe', 'ace/mode/html', 'ace/mode/java', 'ace/mode/javascript', 'ace/mode/json', 'ace/mode/latex', 'ace/mode/less', 'ace/mode/liquid', 'ace/mode/lua', 'ace/mode/markdown', 'ace/mode/ocaml', 'ace/mode/perl', 'ace/mode/pgsql', 'ace/mode/php', 'ace/mode/powershell', 'ace/mode/python', 'ace/mode/ruby', 'ace/mode/scad', 'ace/mode/scala', 'ace/mode/scss', 'ace/mode/sh', 'ace/mode/sql', 'ace/mode/svg', 'ace/mode/textile', 'ace/mode/text', 'ace/mode/xml', 'ace/mode/xquery', 'ace/mode/yaml'
 ], function() {
-// Grab functions from emscripten
-var Pointer_stringify = Module['Pointer_stringify'];
-var _str_to_html = Module['_str_to_html'];
-var malloc = Module._malloc;
-var realloc = Module._realloc;
-var writeStringToMemory = Module.writeStringToMemory;
-var allocSize = 2048;
-var pointer = malloc( allocSize ) ;
-// end emscripten
-
+var UndoManager = require("ace/undomanager").UndoManager;
 var Renderer = require( 'ace/virtual_renderer' ).VirtualRenderer;
 var Editor = require( 'ace/editor' ).Editor;
 var dom = require( 'ace/lib/dom' );
@@ -44,6 +35,7 @@ win.jsm.toggleLeftRight = function() {
 var MarkdownMode = require( 'ace/mode/markdown' ).Mode;
 
 function initAce( editor, editorSession ) {
+  editorSession.setUndoManager(new UndoManager());
   editor.setTheme( 'ace/theme/twilight' );
   editorSession.setMode( new MarkdownMode() );
   // Gutter shows line numbers
@@ -70,7 +62,7 @@ initAce( commentEditor, commentEditorSession );
 $.key = function( key ) {
     var value = new RegExp( '[\\?&]' + key + '=([^&#]*)' ).exec( location.href );
     return  ( !value ) ? 0 : value[ 1 ] || 0;
-}
+};
 
 // True if &create=true
 var create = $.key( 'create' );
@@ -90,7 +82,7 @@ defaultCommitMessage = function() {
   } else {
     return 'Updated ' + msg;
   }
-}
+};
 
 // Set comment using the default commit message.
 commentEditorSession.setValue( defaultCommitMessage() );
@@ -130,7 +122,7 @@ $.save = function( commitMessage ) {
       }
     });
   } // end else
-}
+};
 
 var elapsedTime;
 var oldInputText = '';
@@ -138,13 +130,34 @@ var oldInputText = '';
 // ---- from Markdown.Editor
 var timeout;
 
+var nonSuckyBrowserPreviewSet = function( text ) {
+  // contentdiv is dynamically replaced so look it up each time.
+  content.children[0].innerHTML = text;
+};
+
+// IE doesn't let you use innerHTML if the element is contained somewhere in a table
+// (which is the case for inline editing) -- in that case, detach the element, set the
+// value, and reattach. Yes, that *is* ridiculous.
+var ieSafePreviewSet = function( text ) {
+  // contentdiv is dynamically replaced so look it up each time.
+  var contentdiv = content.children[0];
+  var parent = contentdiv.parentNode;
+  var sibling = contentdiv.nextSibling;
+  parent.removeChild( content );
+  contentdiv.innerHTML = text;
+  if ( !sibling )
+    parent.appendChild( content );
+  else
+    parent.insertBefore( content, sibling );
+};
+
 var cssTextSet = function( element, css ){
   element.style.cssText = css;
-}
+};
 
 var cssAttrSet = function( element, css ){
   element.setAttribute( 'style', css );
-}
+};
 
 /*
  Redefine the function based on browser support.
@@ -162,11 +175,16 @@ var cssSet = function( element, css ) {
     cssAttrSet( element, css );
     cssSet = cssAttrSet;
   }
-}
+};
 
 var previewSet = function( text ) {
-console.log('previewSet');
-  content.value = text;
+  try {
+    nonSuckyBrowserPreviewSet( text );
+    previewSet = nonSuckyBrowserPreviewSet;
+  } catch ( e ) {
+    ieSafePreviewSet( text );
+    previewSet = ieSafePreviewSet;
+  }
 };
 
 // 'c', 'c++', 'cpp' are github specific and transformed to c_cpp for Ace.
@@ -208,6 +226,7 @@ function highlight( element, language ) {
   // '>' and '&gt;'.
   // Firefox does not support innerText.
   var data = element.innerText || element.textContent;
+  data = data.trim();
   var mode = getLang( language );
   // input, mode, theme, lineStart, disableGutter
   var color = staticHighlight.render( data, mode, githubTheme, 1, true );
@@ -216,6 +235,55 @@ function highlight( element, language ) {
   newDiv.innerHTML = color.html;
   element.parentNode.parentNode.replaceChild( newDiv, element.parentNode );
 }
+
+/** from notepag.es **/
+/*
+Define custom filter to accurately compare math nodes.
+Only support dollar syntax (not %%).
+*/
+$.fn.quickdiff( 'filter', 'math',
+  function ( node ) {
+    return (node.nodeName.toLowerCase() === 'span' &&
+      $( node ).hasClass( 'math' ));
+  },
+  function ( a, b ) {
+    var aHTML = $.trim( $( 'script', a ).html() );
+    var bHTML = $.trim( $( b ).html() );
+    return ( '$$' + aHTML + '$$' ) !== bHTML;
+  });
+
+/* MathJax is loaded async so make sure it's defined before calling.
+   if (typeof MathJax != 'undefined') { typeset( new_html ); }
+   http://stackoverflow.com/questions/1834642/best-practice-for-semicolon-after-every-function-in-javascript
+
+  Type set works on the rendered html *output* not input.
+*/
+function typeset( new_html ) {
+  // TODO: Define %% as inline math operator. $$ is only for display math.
+  // code based on notepag.es & attack lab showdown.
+  new_html = new_html.replace(/\$\$([^\r\n]*)\$\$/gm,
+    function(wholeMatch,m1) {
+      return '<span class="math">$$'+m1.trim()+"$$</span>";
+  });
+
+  // content has the old html.
+  // both contentdiv and new_html must be wrapped for quickdiff.
+  // #content > div is guarenteed to be first child.
+  var patch = $( content.children[ 0 ] ).quickdiff( 'diff',
+    $( '<div>' + new_html + '</div>' ), [ 'math' ] );
+  
+  if ( patch.type === 'identical' ) { return; }
+  patch.patch();
+
+  if ( patch.type !== 'identical' && patch.replace.length > 0 ) {
+    $.each( patch.replace, function ( i, el ) {
+      if ( el.innerHTML ) {
+        MathJax.Hub.Queue( [ 'Typeset', MathJax.Hub, el ] );
+      }
+    });
+  }
+}
+/** end from notepag.es **/
 
 var makePreviewHtml = function () {
   var text = editorSession.getValue();
@@ -233,30 +301,14 @@ var makePreviewHtml = function () {
   }
 
   var prevTime = new Date().getTime();
+  text = md_to_html( text );
 
-  try {
-    var textLength = text.length;
-    while ( textLength > allocSize ) {
-      allocSize <<= 1; // double
-      pointer = realloc( pointer, allocSize );
-    }
-
-    writeStringToMemory( text, pointer );
-    text = Pointer_stringify( _str_to_html( pointer ) );
-  } catch ( e ) {
-    console.log( e );
-  }
-
-  // Calculate the processing time of the HTML creation.
-  // It's used as the delay time in the event listener.
-  var currTime = new Date().getTime();
-  elapsedTime = currTime - prevTime;
+  // MathJax is loaded asynchronously.
+  if (typeof MathJax != 'undefined') { typeset( text ); };
 
   // Update the text using feature detection to support IE.
   // preview.innerHTML = text; // this doesn't work on IE.
-  previewSet( text );
-  // MathJax is loaded asynchronously.
-  if (typeof MathJax != 'undefined') { MathJax.Hub.Typeset( content ); }
+  // previewSet( text );
 
   // highlight code blocks.
   var codeElements = preview.getElementsByTagName( 'pre' );
@@ -268,12 +320,14 @@ var makePreviewHtml = function () {
       // highlight removes an element so 0 is always the correct index.
       // Skipped tags are not removed so they must be added.
       var element = codeElements[ 0 + skipped ].firstChild;
-      if ( element == undefined) {
-        return;
+      if ( element == undefined ) {
+        skipped++;
+        continue;
       }
       var codeHTML = element.innerHTML;
-      if ( codeHTML == undefined) {
-        return;
+      if ( codeHTML == undefined ) {
+        skipped++;
+        continue;
       }
       var txt = codeHTML.split( /\b/ );
       // the syntax for code highlighting means all code, even one line, contains newlines.
@@ -301,8 +355,16 @@ var makePreviewHtml = function () {
         skipped++;
       }
     }
-  }
-};
+  }// end highlight
+
+  // Calculate the processing time of the HTML creation.
+  // It's used as the delay time in the event listener.
+  var currTime = new Date().getTime();
+  elapsedTime = currTime - prevTime;
+}; // end makePreviewHtml
+
+// for debugging
+$.makePreview = makePreviewHtml;
 
 // setTimeout is already used.  Used as an event listener.
 var applyTimeout = function () {
@@ -319,9 +381,10 @@ var applyTimeout = function () {
   timeout = setTimeout( makePreviewHtml, elapsedTime );
 };
 
-  /* Load markdown from /data/page into the ace editor. */
-  if (location.host.indexOf('github.com') === -1 &&
-      location.host.indexOf('0.0.0.0') === -1) {
+  /* Load markdown from /data/page into the ace editor.
+     ~-1 == false; !~-1 == true;
+   */
+  if ( !~location.host.indexOf('github.com') ) {
     jQuery.ajax( {
       type: 'GET',
       url: '/data/' + $.key( 'page' ),
@@ -443,28 +506,4 @@ var applyTimeout = function () {
 
   // resize for the intial page load
   resize();
-/** start from reMarked **/
-var options = {
-    link_list:  false,      // render links as references, create link list as appendix
-    h1_setext:  false,       // underline h1 headers
-    h2_setext:  false,       // underline h2 headers
-    h_atx_suf:  false,      // header suffixes (###)
-    gfm_code:   true,      // render code blocks as via ``` delims
-    li_bullet:  '*',        // list item bullet style
-    hr_char:    '-',        // hr style
-    indnt_str:  '    ',     // indentation string
-    emph_char:  '*'         // char used for strong and em
-} 
-/** end from reMarked **/
-var remark = new reMarked(options);
-  function to_md() {
-    console.log('keyup');
-    editorSession.setValue(remark.render(content.value.replace(/>[\s]*</g, ">\n<")));
-  };
-
-  // add default text
-  editorSession.setValue(document.getElementById('default').innerText);
-
-  // watch for html changes
-  $('#contentframe').bind('keyup', $.debounce( 500, to_md ) );
 });
