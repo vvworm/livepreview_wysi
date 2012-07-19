@@ -1,4 +1,4 @@
-require([ 'ace/undomanager', 'ace/ext/static_highlight', 'ace/theme/github', 'ace/editor', 'ace/virtual_renderer', 'ace/mode/markdown', 'ace/theme/twilight',
+require([ 'js/reMarked', 'ace/undomanager', 'ace/ext/static_highlight', 'ace/theme/github', 'ace/editor', 'ace/virtual_renderer', 'ace/mode/markdown', 'ace/theme/twilight',
 'ace/mode/c_cpp', 'ace/mode/clojure', 'ace/mode/coffee', 'ace/mode/coldfusion', 'ace/mode/csharp', 'ace/mode/css', 'ace/mode/diff', 'ace/mode/golang', 'ace/mode/groovy', 'ace/mode/haxe', 'ace/mode/html', 'ace/mode/java', 'ace/mode/javascript', 'ace/mode/json', 'ace/mode/latex', 'ace/mode/less', 'ace/mode/liquid', 'ace/mode/lua', 'ace/mode/markdown', 'ace/mode/ocaml', 'ace/mode/perl', 'ace/mode/pgsql', 'ace/mode/php', 'ace/mode/powershell', 'ace/mode/python', 'ace/mode/ruby', 'ace/mode/scad', 'ace/mode/scala', 'ace/mode/scss', 'ace/mode/sh', 'ace/mode/sql', 'ace/mode/svg', 'ace/mode/textile', 'ace/mode/text', 'ace/mode/xml', 'ace/mode/xquery', 'ace/mode/yaml'
 ], function() {
 var UndoManager = require("ace/undomanager").UndoManager;
@@ -132,23 +132,8 @@ var timeout;
 
 var nonSuckyBrowserPreviewSet = function( text ) {
   // contentdiv is dynamically replaced so look it up each time.
-  content.children[0].innerHTML = text;
-};
-
-// IE doesn't let you use innerHTML if the element is contained somewhere in a table
-// (which is the case for inline editing) -- in that case, detach the element, set the
-// value, and reattach. Yes, that *is* ridiculous.
-var ieSafePreviewSet = function( text ) {
-  // contentdiv is dynamically replaced so look it up each time.
-  var contentdiv = content.children[0];
-  var parent = contentdiv.parentNode;
-  var sibling = contentdiv.nextSibling;
-  parent.removeChild( content );
-  contentdiv.innerHTML = text;
-  if ( !sibling )
-    parent.appendChild( content );
-  else
-    parent.insertBefore( content, sibling );
+  // content.children[0].innerHTML = text;
+  content.value = text;
 };
 
 var cssTextSet = function( element, css ){
@@ -303,12 +288,9 @@ var makePreviewHtml = function () {
   var prevTime = new Date().getTime();
   text = md_to_html( text );
 
-  // MathJax is loaded asynchronously.
-  if (typeof MathJax != 'undefined') { typeset( text ); };
-
   // Update the text using feature detection to support IE.
   // preview.innerHTML = text; // this doesn't work on IE.
-  // previewSet( text );
+  previewSet( text );
 
   // highlight code blocks.
   var codeElements = preview.getElementsByTagName( 'pre' );
@@ -438,7 +420,7 @@ var applyTimeout = function () {
 
   // onChange calls applyTimeout which rate limits the calling of makePreviewHtml based on render time.
   editor.on( 'change', applyTimeout );
-  makePreviewHtml(); // preview default text on load
+  // makePreviewHtml(); // preview default text on load
 
   function resize() {
     var width = $( win ).width();
