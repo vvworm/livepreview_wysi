@@ -510,6 +510,7 @@ $.to_md = to_md;
 
   // on loss of focus, change will fire.  
   wysi.on( 'change', wysiChange );
+  // listen on iframe body. https://github.com/xing/wysihtml5/issues/104
   $( wysi.composer.element ).bind('keyup', $.debounce( 600, wysiChange ) );
   // watch for html changes
   // $('#contentframe').bind('keyup', $.debounce( 500, to_md ) );
