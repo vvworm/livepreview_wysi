@@ -444,6 +444,8 @@ var applyTimeout = function () {
     console.log( 'changed' );
     // wysi.getValue() returns the user entered value, not the HTML markup.
     editorSession.setValue( to_md( wysi.textareaElement.value ) );
+    // setValue causes the entire text to be selected, so clear the selection.
+    editorSession.selection.clearSelection()
   }
 
   // Add default text.
