@@ -131,9 +131,10 @@ var oldInputText = '';
 var timeout;
 
 var nonSuckyBrowserPreviewSet = function( text ) {
+  console.log( 'preview set' );
   // contentdiv is dynamically replaced so look it up each time.
   // content.children[0].innerHTML = text;
-  content.value = text;
+  wysi.setValue( text );
 };
 
 var cssTextSet = function( element, css ){
@@ -363,19 +364,6 @@ var applyTimeout = function () {
   timeout = setTimeout( makePreviewHtml, elapsedTime );
 };
 
-  /* Load markdown from /data/page into the ace editor.
-     ~-1 == false; !~-1 == true;
-   */
-  if ( !~location.host.indexOf('github.com') ) {
-    jQuery.ajax( {
-      type: 'GET',
-      url: '/data/' + $.key( 'page' ),
-      success: function( data ) {
-         editorSession.setValue( data );
-      }
-    });
-  }
-
   $( '#save' ).click( function() {
     $.save();
   });
@@ -505,14 +493,24 @@ var applyTimeout = function () {
 
   /** end from reMarked **/
   var remark = new reMarked(options);
-  function to_md() {
-    console.log('keyup');
-    editorSession.setValue(remark.render(content.value.replace(/>[\s]*</g, ">\n<")));
-  };
+  function to_md( html ) {
+    return remark.render( html.replace(/>[\s]*</g, ">\n<") );
+  }
+
+// for debugging
+$.to_md = to_md;
 
   // add default text
   // editorSession.setValue(document.getElementById('default').innerText);
+  function wysiChange() {
+    console.log( 'changed' );
+    // wysi.getValue() returns the user entered value, not the HTML markup.
+    editorSession.setValue( to_md( wysi.textareaElement.value ) );
+  }
 
+  // on loss of focus, change will fire.  
+  wysi.on( 'change', wysiChange );
+  $( wysi.composer.element ).bind('keyup', $.debounce( 600, wysiChange ) );
   // watch for html changes
-  $('#contentframe').bind('keyup', $.debounce( 500, to_md ) );
+  // $('#contentframe').bind('keyup', $.debounce( 500, to_md ) );
 });

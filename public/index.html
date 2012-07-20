@@ -7,6 +7,9 @@
 -->
 <link rel='stylesheet' type='text/css' href='css/gollum/template.css' />
 <link rel='stylesheet' type='text/css' href='css/custom.css' />
+<!-- bootstrap wysihtml5 -->
+<link rel='stylesheet' type='text/css' href='bootstrap-wysihtml5/css/bootstrap-wysihtml5-0.0.2.css'></link>
+<link rel='stylesheet' type='text/css' href='bootstrap-wysihtml5/css/bootstrap.min.css'></link>
 </head>
 
 <body>
@@ -46,6 +49,14 @@ var require = {
 <script src='js/sundown.js'></script>
 <script src='js/md_sundown.js'></script>
 <script src='js/quickdiff.js'></script>
+<!-- bootstrap wysihtml5 -->
+<script src='bootstrap-wysihtml5/js/wysihtml5-0.3.0.min.js'></script>
+<script src='bootstrap-wysihtml5/js/bootstrap.min.js'></script>
+<script src='bootstrap-wysihtml5/js/bootstrap-wysihtml5-0.0.2.min.js'></script>
+<script>
+var wysi = $('#contentframe').wysihtml5().data("wysihtml5").editor;
+</script>
+<!-- end bootstrap -->
 <script src='js/livepreview.js'></script>
 </body>
 </html>
