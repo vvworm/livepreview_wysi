@@ -35,6 +35,3 @@ if (textareaValue) {
 }
 },
 ```
-
-
-textarea.getValue(true);
