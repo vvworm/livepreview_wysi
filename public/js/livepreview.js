@@ -477,28 +477,15 @@ var applyTimeout = function () {
   // resize for the intial page load
   resize();
 
-/** -- reMarked -- **/
-/** start from reMarked **/
-  var options = {
-    link_list:  false,      // render links as references, create link list as appendix
-    h1_setext:  false,       // underline h1 headers
-    h2_setext:  false,       // underline h2 headers
-    h_atx_suf:  false,      // header suffixes (###)
-    gfm_code:   true,      // render code blocks as via ``` delims
-    li_bullet:  '*',        // list item bullet style
-    hr_char:    '-',        // hr style
-    indnt_str:  '    ',     // indentation string
-    emph_char:  '*'         // char used for strong and em
-  };
-
-  /** end from reMarked **/
-  var remark = new reMarked(options);
+  // reMarked can take an options object.
+  // https://github.com/leeoniya/reMarked.js
+  var remark = new reMarked();
   function to_md( html ) {
     return remark.render( html.replace(/>[\s]*</g, ">\n<") );
   }
 
-// for debugging
-$.to_md = to_md;
+  // for debugging
+  $.to_md = to_md;
 
   // add default text
   // editorSession.setValue(document.getElementById('default').innerText);

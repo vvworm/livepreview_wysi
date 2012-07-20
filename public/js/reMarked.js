@@ -23,6 +23,7 @@ reMarked = function(opts) {
 		emph_char:	"*_"[0],		// char used for strong and em
 		gfm_tbls:	true,			// markdown-extra tables
 		tbl_edges:	false,			// show side edges on tables
+		hash_lnks:	false,			// anchors w/hash hrefs as links
 	};
 
 	extend(cfg, opts);
@@ -104,7 +105,7 @@ reMarked = function(opts) {
 			// hack
 			re += "\n\n";
 			var maxlen = 0;
-			// get longest link href with title
+			// get longest link href with title, TODO: use getAttribute?
 			for (var y in links) {
 				if (!links[y].e.title) continue;
 				var len = links[y].e.href.length;
@@ -163,7 +164,7 @@ reMarked = function(opts) {
 						// only ouput when has an adjacent inline elem
 						var prev = this.e.childNodes[i-1],
 							next = this.e.childNodes[i+1];
-						if (!nodeName(prev).match(inlRe) || !nodeName(next).match(inlRe))
+						if (prev && !nodeName(prev).match(inlRe) || next && !nodeName(next).match(inlRe))
 							continue;
 					}
 					if (!lib[name])
@@ -171,7 +172,7 @@ reMarked = function(opts) {
 
 					var node = new lib[name](n, this, this.c.length);
 
-					if (node instanceof lib.a || node instanceof lib.img) {
+					if (node instanceof lib.a && n.href || node instanceof lib.img) {
 						node.lnkid = links.length;
 						links.push(node);
 					}
@@ -340,19 +341,17 @@ reMarked = function(opts) {
 		lib.a = lib.inl.extend({
 			lnkid: null,
 			rend: function() {
-				var kids = this.rendK();
+				var kids = this.rendK(),
+					href = this.e.getAttribute("href"),
+					title = this.e.title ? ' "' + this.e.title + '"' : "";
+
+				if (!href || href == kids || href[0] == "#" && !cfg.hash_lnks)
+					return kids;
 
 				if (cfg.link_list)
 					return "[" + kids + "] [" + (this.lnkid + 1) + "]";
 
-				var title = this.e.title ? ' "'+ this.e.title + '"' : "";
-
-				var href = this.e.getAttribute("href");
-
-				if (href == kids)
-					return href;
-
-				return "[" + kids + "](" + this.e.getAttribute("href") + title + ")";
+				return "[" + kids + "](" + href + title + ")";
 			}
 		});
 
@@ -360,19 +359,22 @@ reMarked = function(opts) {
 		lib.img = lib.inl.extend({
 			lnkid: null,
 			rend: function() {
-				var kids = this.e.alt;
+				var kids = this.e.alt,
+					src = this.e.getAttribute("src");
 
 				if (cfg.link_list)
 					return "[" + kids + "] [" + (this.lnkid + 1) + "]";
 
 				var title = this.e.title ? ' "'+ this.e.title + '"' : "";
 
-				return "![" + kids + "](" + this.e.getAttribute("src") + title + ")";
+				return "![" + kids + "](" + src + title + ")";
 			}
 		});
 
 
 		lib.em = lib.inl.extend({wrap: cfg.emph_char});
+
+			lib.i = lib.em.extend();
 
 		lib.del = lib.tinl.extend();
 
@@ -384,6 +386,8 @@ reMarked = function(opts) {
 		});
 
 		lib.strong = lib.inl.extend({wrap: rep(cfg.emph_char, 2)});
+
+			lib.b = lib.strong.extend();
 
 		lib.dl = lib.tblk.extend({lnInd: 2});
 
