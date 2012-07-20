@@ -509,7 +509,7 @@ $.to_md = to_md;
   }
 
   // Add default text.
-  wysi.setValue( 'Markdown is translated to HTML on the right in real time.' + "\n" +
+  editorSession.setValue( 'Markdown is translated to HTML on the right in real time.' + "\n" +
   'Click on the Markdown view after editing to translate HTML back to Markdown.' );
 
   // on loss of focus, change will fire.  
@@ -519,4 +519,7 @@ $.to_md = to_md;
   // $( wysi.composer.element ).bind('keyup', $.debounce( 600, wysiChange ) );
   // watch for html changes
   // $('#contentframe').bind('keyup', $.debounce( 500, to_md ) );
+
+  // show preview frame to prevent wysihtml5 flicker.
+  previewframe.style = '';
 });
