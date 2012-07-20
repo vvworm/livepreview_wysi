@@ -499,8 +499,9 @@ var applyTimeout = function () {
   editorSession.setValue( 'Markdown is translated to HTML on the right in real time.' + "\n\n" +
   'Click on the Markdown view after editing to translate HTML back to Markdown.' );
 
-  // on loss of focus, change will fire.  
-  wysi.on( 'change', wysiChange );
+  // on loss of focus, change will fire.
+  // only listen for changes in text view, not source view.
+  wysi.on( 'change:composer', wysiChange );
   // setValue() changes the cursor position and breaks the user experience.
   // listen on iframe body. https://github.com/xing/wysihtml5/issues/104
   // $( wysi.composer.element ).bind('keyup', $.debounce( 600, wysiChange ) );
