@@ -445,8 +445,20 @@ var applyTimeout = function () {
     // wysi.getValue() returns the user entered value, not the HTML markup.
     editorSession.setValue( to_md( wysi.textareaElement.value ) );
     // setValue causes the entire text to be selected, so clear the selection.
-    editorSession.selection.clearSelection()
   }
+
+  var clear = true;
+  // full text selection automatically occurs slightly after focus is regained.
+  editor.on('focus', function() {
+    console.log('focus');
+    setTimeout(function(){clear = false;}, 100);
+  });
+  editor.on('blur', function() { console.log('blur'); clear = true; });
+  editorSession.selection.on('changeSelection', function(){
+    if (!clear) return;
+    console.log('changeSelection ' + clear);
+    editorSession.selection.clearSelection();
+  });
 
   // Add default text.
   editorSession.setValue( 'Markdown entered on the left is translated to HTML on the right in real time.' + "\n\n" +
