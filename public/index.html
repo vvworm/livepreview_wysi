@@ -54,7 +54,9 @@ var require = {
 <script src='bootstrap-wysihtml5/js/bootstrap.min.js'></script>
 <script src='bootstrap-wysihtml5/js/bootstrap-wysihtml5-0.0.2.min.js'></script>
 <script>
-var wysi = $('#contentframe').wysihtml5().data("wysihtml5").editor;
+// html true enables source view
+// https://github.com/jhollingworth/bootstrap-wysihtml5/issues/29
+var wysi = $('#contentframe').wysihtml5({"html":true}).data("wysihtml5").editor;
 </script>
 <!-- end bootstrap -->
 <script src='js/livepreview.js'></script>
