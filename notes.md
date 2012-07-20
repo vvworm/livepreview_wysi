@@ -10,3 +10,14 @@ Default markup in wysihtml5 for the above is:
 <span>a<br>
 b</span>
 ```
+
+---
+
+wysihtml5-0.3.0.js modification.
+
+```javascript
+fromComposerToTextarea: function(shouldParseHtml) {
+  // use html exactly as is.
+  this.textarea.setValue(this.composer.getValue().trim(), false);
+},
+```
