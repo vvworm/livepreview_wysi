@@ -222,55 +222,6 @@ function highlight( element, language ) {
   element.parentNode.parentNode.replaceChild( newDiv, element.parentNode );
 }
 
-/** from notepag.es **/
-/*
-Define custom filter to accurately compare math nodes.
-Only support dollar syntax (not %%).
-*/
-$.fn.quickdiff( 'filter', 'math',
-  function ( node ) {
-    return (node.nodeName.toLowerCase() === 'span' &&
-      $( node ).hasClass( 'math' ));
-  },
-  function ( a, b ) {
-    var aHTML = $.trim( $( 'script', a ).html() );
-    var bHTML = $.trim( $( b ).html() );
-    return ( '$$' + aHTML + '$$' ) !== bHTML;
-  });
-
-/* MathJax is loaded async so make sure it's defined before calling.
-   if (typeof MathJax != 'undefined') { typeset( new_html ); }
-   http://stackoverflow.com/questions/1834642/best-practice-for-semicolon-after-every-function-in-javascript
-
-  Type set works on the rendered html *output* not input.
-*/
-function typeset( new_html ) {
-  // TODO: Define %% as inline math operator. $$ is only for display math.
-  // code based on notepag.es & attack lab showdown.
-  new_html = new_html.replace(/\$\$([^\r\n]*)\$\$/gm,
-    function(wholeMatch,m1) {
-      return '<span class="math">$$'+m1.trim()+"$$</span>";
-  });
-
-  // content has the old html.
-  // both contentdiv and new_html must be wrapped for quickdiff.
-  // #content > div is guarenteed to be first child.
-  var patch = $( content.children[ 0 ] ).quickdiff( 'diff',
-    $( '<div>' + new_html + '</div>' ), [ 'math' ] );
-  
-  if ( patch.type === 'identical' ) { return; }
-  patch.patch();
-
-  if ( patch.type !== 'identical' && patch.replace.length > 0 ) {
-    $.each( patch.replace, function ( i, el ) {
-      if ( el.innerHTML ) {
-        MathJax.Hub.Queue( [ 'Typeset', MathJax.Hub, el ] );
-      }
-    });
-  }
-}
-/** end from notepag.es **/
-
 var makePreviewHtml = function () {
   var text = editorSession.getValue();
 
