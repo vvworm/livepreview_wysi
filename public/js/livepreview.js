@@ -509,7 +509,7 @@ $.to_md = to_md;
   }
 
   // Add default text.
-  editorSession.setValue( 'Markdown is translated to HTML on the right in real time.' + "\n" +
+  editorSession.setValue( 'Markdown is translated to HTML on the right in real time.' + "\n\n" +
   'Click on the Markdown view after editing to translate HTML back to Markdown.' );
 
   // on loss of focus, change will fire.  
