@@ -15,9 +15,26 @@ b</span>
 
 wysihtml5-0.3.0.js modification.
 
+Transfer text exactly from composer to textarea and back.
+
 ```javascript
 fromComposerToTextarea: function(shouldParseHtml) {
   // use html exactly as is.
   this.textarea.setValue(this.composer.getValue().trim(), false);
 },
+
+
+fromTextareaToComposer: function(shouldParseHtml) {
+var textareaValue = this.textarea.getValue();
+if (textareaValue) {
+  // use html exactly as is.
+  this.composer.setValue(textareaValue, false);
+} else {
+  this.composer.clear();
+  this.editor.fire("set_placeholder");
+}
+},
 ```
+
+
+textarea.getValue(true);

@@ -8639,7 +8639,8 @@ wysihtml5.views.View = Base.extend(
     fromTextareaToComposer: function(shouldParseHtml) {
       var textareaValue = this.textarea.getValue();
       if (textareaValue) {
-        this.composer.setValue(textareaValue, shouldParseHtml);
+        // Use html exactly as is.
+        this.composer.setValue(textareaValue, false);
       } else {
         this.composer.clear();
         this.editor.fire("set_placeholder");
